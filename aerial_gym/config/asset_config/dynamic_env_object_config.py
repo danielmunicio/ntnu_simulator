@@ -538,3 +538,46 @@ class back_wall(asset_state_params):
     per_link_semantic = False
     semantic_id = BACK_WALL_SEMANTIC_ID
     color = [100, 200, 210]
+
+class custom_daniel_object(asset_state_params):
+    num_assets = 1  # only one asset
+    asset_folder = f"{AERIAL_GYM_DIRECTORY}/resources/models/environment_assets/objects"
+    file = "small_cube.urdf"   # directly specify the cube
+    specific_filepath = None   # not needed since we’re pointing with `file`
+    
+    keep_in_env = True
+    collapse_fixed_joints = True
+    per_link_semantic = False
+    semantic_id = OBJECT_SEMANTIC_ID
+    color = [80, 255, 100]  # optional, for visualization
+
+    min_state_ratio = [
+        0.05,
+        0.05,
+        0.00,
+        0.,
+        0.,
+        0.,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]
+    max_state_ratio = [
+        0.1,
+        0.1,
+        0.0,
+        0.0,
+        0.,
+        0.,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]

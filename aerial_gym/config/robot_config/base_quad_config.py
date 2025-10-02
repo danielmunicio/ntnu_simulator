@@ -227,3 +227,7 @@ class BaseQuadWithStereoCameraCfg(BaseQuadCfg):
         enable_camera = True
         camera_config = StereoCameraConfig
 
+class BaseQuadWithRGBCameraCfg(BaseQuadCfg):
+    class sensor_config(BaseQuadCfg.sensor_config):
+        enable_camera = True
+        camera_config = StereoCameraConfig # Find what to do for adding RGB 

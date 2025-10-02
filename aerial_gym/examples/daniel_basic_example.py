@@ -20,7 +20,7 @@ if __name__ == "__main__":
         device="cuda:0",
         num_envs=2,
         headless=False,
-        use_warp=True,
+        use_warp=False,
     )
     actions = torch.zeros((env_manager.num_envs, 4)).to("cuda:0")
     # actions[:, 2] = 1
@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
         try:
             image1 = (
-                255.0 * env_manager.global_tensor_dict["depth_range_pixels"][0, 0].cpu().numpy()
+                255.0 * env_manager.global_tensor_dict["rgb_pixels"][0, 0].cpu().numpy()
             ).astype(np.uint8)
         except Exception as e:
             logger.error("Error in getting images")
@@ -45,7 +45,7 @@ if __name__ == "__main__":
         depth_frames.append(depth_image1)
 
     depth_frames[0].save(
-        "depth_gif.gif",
+        "rgb_gif.gif",
         save_all=True,
         append_images=depth_frames[1:],
         duration=100,

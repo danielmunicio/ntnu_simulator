@@ -134,6 +134,8 @@ class RobotManagerIGE(BaseManager):
                     "Lidar sensors are not supported using Isaac Gym Rendering. Please enable warp."
                 )
 
+            print("-----------------------------------------")
+            print('ENABLE CAMERA: ', self.cfg.sensor_config.enable_camera)
             if self.cfg.sensor_config.enable_camera:
                 self.image_tensor = torch.zeros(
                     (
@@ -158,7 +160,7 @@ class RobotManagerIGE(BaseManager):
                     requires_grad=False,
                 )
                 self.global_tensor_dict["rgb_pixels"] = self.rgb_image_tensor
-
+                print("IMAGE TENSOR: ", self.image_tensor)
                 if self.cfg.sensor_config.camera_config.segmentation_camera:
                     self.segmentation_tensor = torch.zeros(
                         (
