@@ -44,7 +44,11 @@ class DanielEnvironmentCfg:
             "front_wall": False,
             "top_wall": False,
             "bottom_wall": False,
-            'custom_daniel_object': True
+            'custom_daniel_object': True,
+            'daniel_cube_red': True,
+            'daniel_cube_blue': True,
+            'daniel_cube_yellow': True,
+            'daniel_cube_purple': False,
         }
 
         # maps the above names to the classes defining the assets. They can be enabled and disabled above in include_asset_type
@@ -60,4 +64,8 @@ class DanielEnvironmentCfg:
             "bottom_wall": bottom_wall,
             "top_wall": top_wall,
             'custom_daniel_object': custom_daniel_object,
+            'daniel_cube_red': daniel_cube_red,
+            'daniel_cube_blue': daniel_cube_blue,
+            'daniel_cube_yellow': daniel_cube_yellow,
+            'daniel_cube_purple': daniel_cube_purple,
         }

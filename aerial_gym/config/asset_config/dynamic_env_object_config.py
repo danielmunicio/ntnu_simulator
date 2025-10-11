@@ -542,19 +542,20 @@ class back_wall(asset_state_params):
 class custom_daniel_object(asset_state_params):
     num_assets = 1  # only one asset
     asset_folder = f"{AERIAL_GYM_DIRECTORY}/resources/models/environment_assets/objects"
-    file = "small_cube.urdf"   # directly specify the cube
-    specific_filepath = None   # not needed since we’re pointing with `file`
-    
+    file = "small_cube_green.urdf"   # directly specify the cube
+    specific_filepath = None   # not needed since we're pointing with `file`
+
     keep_in_env = True
     collapse_fixed_joints = True
     per_link_semantic = False
     semantic_id = OBJECT_SEMANTIC_ID
-    color = [80, 255, 100]  # optional, for visualization
+    color = [80, 255, 100]  # Green - center
+    disable_gravity = False
 
     min_state_ratio = [
-        0.05,
-        0.05,
-        0.00,
+        0.01,  # x: center
+        0.01,  # y: center
+        0.0,   # z: above ground
         0.,
         0.,
         0.,
@@ -567,9 +568,184 @@ class custom_daniel_object(asset_state_params):
         0.0,
     ]
     max_state_ratio = [
-        0.1,
-        0.1,
+        0.01,
+        0.01,
         0.0,
+        0.0,
+        0.,
+        0.,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]
+
+class daniel_cube_red(asset_state_params):
+    num_assets = 1
+    asset_folder = f"{AERIAL_GYM_DIRECTORY}/resources/models/environment_assets/objects"
+    file = "small_cube_red.urdf"
+    specific_filepath = None
+
+    keep_in_env = True
+    collapse_fixed_joints = True
+    per_link_semantic = False
+    semantic_id = OBJECT_SEMANTIC_ID
+    color = [255, 50, 50]  # Red - front
+    disable_gravity = False
+
+    min_state_ratio = [
+        0.69,  # x: front (2m forward)
+        0.69,  # y: centered
+        0.,   # z: above ground
+        0.,
+        0.,
+        0.,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]
+    max_state_ratio = [
+        0.69,
+        0.69,
+        0.0,
+        0.0,
+        0.,
+        0.,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]
+
+class daniel_cube_blue(asset_state_params):
+    num_assets = 1
+    asset_folder = f"{AERIAL_GYM_DIRECTORY}/resources/models/environment_assets/objects"
+    file = "small_cube_blue.urdf"
+    specific_filepath = None
+
+    keep_in_env = True
+    collapse_fixed_joints = True
+    per_link_semantic = False
+    semantic_id = OBJECT_SEMANTIC_ID
+    color = [50, 100, 255]  # Blue - right
+    disable_gravity = False
+
+    min_state_ratio = [
+        0.01,  # x: centered
+        0.99,  # y: right (2m right)
+        0.0,   # z: above ground
+        0.,
+        0.,
+        0.,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]
+    max_state_ratio = [
+        0.01,
+        0.99,
+        0.0,
+        0.0,
+        0.,
+        0.,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]
+
+class daniel_cube_yellow(asset_state_params):
+    num_assets = 1
+    asset_folder = f"{AERIAL_GYM_DIRECTORY}/resources/models/environment_assets/objects"
+    file = "small_cube_yellow.urdf"
+    specific_filepath = None
+
+    keep_in_env = True
+    collapse_fixed_joints = True
+    per_link_semantic = False
+    semantic_id = OBJECT_SEMANTIC_ID
+    color = [255, 255, 50]  # Yellow - back
+    disable_gravity = False
+
+    min_state_ratio = [
+        0.99,  # x: back (2m back)
+        0.31,  # y: centered
+        0.0,   # z: above ground
+        0.,
+        0.,
+        0.,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]
+    max_state_ratio = [
+        0.99,
+        0.31,
+        0.0,
+        0.0,
+        0.,
+        0.,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]
+
+class daniel_cube_purple(asset_state_params):
+    num_assets = 1
+    asset_folder = f"{AERIAL_GYM_DIRECTORY}/resources/models/environment_assets/objects"
+    file = "small_cube_purple.urdf"
+    specific_filepath = None
+
+    keep_in_env = True
+    collapse_fixed_joints = True
+    per_link_semantic = False
+    semantic_id = OBJECT_SEMANTIC_ID
+    color = [200, 50, 255]  # Purple - left
+
+    min_state_ratio = [
+        0.48,  # x: centered
+        0.33,  # y: left (2m left)
+        0.1,   # z: above ground
+        0.,
+        0.,
+        0.,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]
+    max_state_ratio = [
+        0.52,
+        0.37,
+        0.1,
         0.0,
         0.,
         0.,

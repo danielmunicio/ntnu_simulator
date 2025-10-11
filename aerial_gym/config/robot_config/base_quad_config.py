@@ -28,12 +28,12 @@ class BaseQuadCfg:
     class init_config:
         # init_state tensor is of the format [ratio_x, ratio_y, ratio_z, roll_radians, pitch_radians, yaw_radians, 1.0 (for maintaining shape), vx, vy, vz, wx, wy, wz]
         min_init_state = [
-            0.1,
-            0.15,
-            0.15,
-            0,  # -np.pi / 6,
-            0,  # -np.pi / 6,
-            -np.pi / 6,
+            0.1,  # x
+            0.15, # y
+            0.20, # z
+            0,  # roll
+            0,  # pitch
+            -np.pi / 6, #+ 3 * np.pi / 2, # yaw
             1.0,
             -0.2,
             -0.2,
@@ -45,7 +45,7 @@ class BaseQuadCfg:
         max_init_state = [
             0.2,
             0.85,
-            0.85,
+            0.20,
             0,  # np.pi / 6,
             0,  # np.pi / 6,
             np.pi / 6,
@@ -230,4 +230,13 @@ class BaseQuadWithStereoCameraCfg(BaseQuadCfg):
 class BaseQuadWithRGBCameraCfg(BaseQuadCfg):
     class sensor_config(BaseQuadCfg.sensor_config):
         enable_camera = True
-        camera_config = StereoCameraConfig # Find what to do for adding RGB 
+        camera_config = StereoCameraConfig # Find what to do for adding RGB
+
+class BaseQuadCameraCfg(BaseQuadCfg):
+    class sensor_config(BaseQuadCfg.sensor_config):
+        enable_camera = True
+        camera_config = StereoCameraConfig
+
+    class robot_asset(BaseQuadCfg.robot_asset):
+        file = "quad_camera.urdf"
+        name = "quad_camera" 
