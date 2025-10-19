@@ -17,8 +17,8 @@ class QuadDualRGBCameraConfig(BaseRGBCameraConfig):
     ]
 
     nominal_orientations_euler_deg = [
-        [0.0, 0.0, 0.0],     # Forward camera orientation
-        [180.0, 0.0, 90.0],  # Downward camera orientation (matches URDF rotation)
+        [0.0, 0.0, 0.0],     # Forward camera: looking straight ahead
+        [0.0, 90.0, 0.0],    # Downward camera: 90° pitch down (perfectly downward)
     ]
 
     # Disable randomization for multiple cameras (for now)
