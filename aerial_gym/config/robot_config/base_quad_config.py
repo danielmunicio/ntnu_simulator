@@ -18,6 +18,13 @@ from aerial_gym.config.sensor_config.camera_config.stereo_camera_config import (
     StereoCameraConfig,
 )
 
+from aerial_gym.config.sensor_config.camera_config.base_rgb_camera_config import (
+    BaseDepthCameraConfig as BaseRGBCameraConfig,
+)
+
+from aerial_gym.config.sensor_config.camera_config.quad_dual_rgb_camera_config import (
+    QuadDualRGBCameraConfig,
+)
 
 from aerial_gym.config.sensor_config.lidar_config.osdome_64_config import OSDome_64_Config
 from aerial_gym.config.sensor_config.imu_config.base_imu_config import BaseImuConfig
@@ -235,8 +242,6 @@ class BaseQuadWithRGBCameraCfg(BaseQuadCfg):
 class BaseQuadCameraCfg(BaseQuadCfg):
     class sensor_config(BaseQuadCfg.sensor_config):
         enable_camera = True
-        camera_config = StereoCameraConfig
+        camera_config = QuadDualRGBCameraConfig
 
-    class robot_asset(BaseQuadCfg.robot_asset):
-        file = "quad_camera.urdf"
-        name = "quad_camera" 
+    # Use base quad.urdf - cameras are attached programmatically, not via URDF links! 

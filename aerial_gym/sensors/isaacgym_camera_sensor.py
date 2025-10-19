@@ -51,24 +51,55 @@ class IsaacGymCameraSensor(BaseSensor):
         # camera supersampling is unchanged for now
         self.camera_properties = camera_props
 
-        # local transform for camera
-        self.local_transform = gymapi.Transform()
-        self.local_transform.p = gymapi.Vec3(
-            self.cfg.nominal_position[0],
-            self.cfg.nominal_position[1],
-            self.cfg.nominal_position[2],
-        )
-        angle_euler = torch.deg2rad(
-            torch.tensor(
-                self.cfg.nominal_orientation_euler_deg,
-                device=self.device,
-                requires_grad=False,
-            )
-        )
-        angle_quat = quat_from_euler_xyz(angle_euler[0], angle_euler[1], angle_euler[2])
-        self.local_transform.r = gymapi.Quat(
-            angle_quat[0], angle_quat[1], angle_quat[2], angle_quat[3]
-        )
+        # Create local transforms for each sensor
+        self.local_transforms = []
+
+        # Check if multiple positions/orientations are provided
+        if hasattr(self.cfg, 'nominal_positions') and hasattr(self.cfg, 'nominal_orientations_euler_deg'):
+            # Multiple camera positions specified
+            for i in range(self.cfg.num_sensors):
+                local_transform = gymapi.Transform()
+                local_transform.p = gymapi.Vec3(
+                    self.cfg.nominal_positions[i][0],
+                    self.cfg.nominal_positions[i][1],
+                    self.cfg.nominal_positions[i][2],
+                )
+                angle_euler = torch.deg2rad(
+                    torch.tensor(
+                        self.cfg.nominal_orientations_euler_deg[i],
+                        device=self.device,
+                        requires_grad=False,
+                    )
+                )
+                angle_quat = quat_from_euler_xyz(angle_euler[0], angle_euler[1], angle_euler[2])
+                local_transform.r = gymapi.Quat(
+                    angle_quat[0], angle_quat[1], angle_quat[2], angle_quat[3]
+                )
+                self.local_transforms.append(local_transform)
+        else:
+            # Single camera position (backward compatibility)
+            for i in range(self.cfg.num_sensors):
+                local_transform = gymapi.Transform()
+                local_transform.p = gymapi.Vec3(
+                    self.cfg.nominal_position[0],
+                    self.cfg.nominal_position[1],
+                    self.cfg.nominal_position[2],
+                )
+                angle_euler = torch.deg2rad(
+                    torch.tensor(
+                        self.cfg.nominal_orientation_euler_deg,
+                        device=self.device,
+                        requires_grad=False,
+                    )
+                )
+                angle_quat = quat_from_euler_xyz(angle_euler[0], angle_euler[1], angle_euler[2])
+                local_transform.r = gymapi.Quat(
+                    angle_quat[0], angle_quat[1], angle_quat[2], angle_quat[3]
+                )
+                self.local_transforms.append(local_transform)
+
+        # Keep backward compatibility
+        self.local_transform = self.local_transforms[0]
 
     def add_sensor_to_env(self, env_id, env_handle, actor_handle):
         """
@@ -84,17 +115,22 @@ class IsaacGymCameraSensor(BaseSensor):
         - None
         """
         logger.debug(f"Adding camera sensor to env {env_handle} and actor {actor_handle}")
-        if len(self.cam_handles) == env_id:
+        if len(self.depth_tensors) == env_id:
             self.depth_tensors.append([])
             self.segmentation_tensors.append([])
             self.color_tensors.append([])
+            self.cam_handles.append([])  # Make cam_handles nested like other tensors
+
+        # Determine which sensor index this is for this environment
+        sensor_idx = len(self.depth_tensors[env_id])
+
         self.cam_handle = self.gym.create_camera_sensor(env_handle, self.camera_properties)
-        self.cam_handles.append(self.cam_handle)
+        self.cam_handles[env_id].append(self.cam_handle)  # Append to the env-specific list
         self.gym.attach_camera_to_body(
             self.cam_handle,
             env_handle,
             actor_handle,
-            self.local_transform,
+            self.local_transforms[sensor_idx],
             gymapi.FOLLOW_TRANSFORM,
         )
         self.depth_tensors[env_id].append(
